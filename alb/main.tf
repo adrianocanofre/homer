@@ -37,7 +37,7 @@ resource "aws_security_group" "alb_cip" {
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["${var.i_ip_range}"]
-    description = "${var.ingress_description}"
+    description = "${var.i_description}"
   }
 
   # outbound internet access

@@ -40,30 +40,30 @@ variable "vpc_id" {
 
 variable "sg_alb_name" {
   type        = "string"
-  description = "Nome do SG"
+  description = "name of SG to be linked to lb"
 }
 
 variable "sg_alb_description" {
   type        = "string"
-  description = "Descrição do SG"
+  description = "Info about SG"
 }
 
 variable "sg_alb_tags" {
   type        = "map"
-  description = "Tags para o SG do ALB corp"
+  description = "Information about the SG"
 }
 
-variable "ingress_description" {
+variable "i_description" {
   type        = "string"
-  description = "Descrição do SG"
+  description = "description of IP ingress"
 }
 
 variable "i_ip_range" {
   type        = "string"
-  description = "Range de IPs do Ingress"
+  description = "Range of IPs"
 }
 
 variable "e_ip_range" {
   type        = "string"
-  description = "Range de IPs do Egress"
+  description = "Range of IPs"
 }
