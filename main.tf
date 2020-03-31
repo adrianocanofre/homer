@@ -23,7 +23,6 @@ resource "aws_subnet" "public" {
     }
 }
 
-
 resource "aws_subnet" "private" {
   count                   = length(var.cidr_private_subnet)
 
