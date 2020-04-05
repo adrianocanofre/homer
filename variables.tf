@@ -1,6 +1,6 @@
 variable "vpc_name" {
   type    = string
-  default = "vpc-dev"
+  default = "vpc"
 }
 
 variable "cidr" {
@@ -21,4 +21,12 @@ variable "cidr_private_subnet" {
 variable "azs" {
   type    = list
   default = ["us-east-1a", "us-east-1b", "us-east-1c"]
+}
+
+variable "envs" {
+  type = map
+  default = {
+    dev  = "dev"
+    prod = "prod"
+  }
 }

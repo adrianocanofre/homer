@@ -1,28 +1,7 @@
-provider "aws" {
-  region                  = "us-east-1"
-  shared_credentials_file = "$HOME/.aws/credentials"
-  profile                 = "aws-terraform"
-}
-
-terraform {
-  backend "s3" {
-    # Bucket config!
-    bucket         = "homer-s3-state"
-    key            = "global/s3/terraform.tfstate"
-    region         = "us-east-1"
-    profile  = "aws-terraform"
-
-   # DynamoDB table config!
-   dynamodb_table = "terraform-state-lock-dynamo-homer"
-   encrypt        = true
-  }
-}
-
-
 resource "aws_vpc" "this" {
   cidr_block = var.cidr
   tags ={
-      "Name" = format("%s", var.vpc_name)
+      "Name" = format("%s", local.vpc_name)
     }
 }
 
@@ -34,7 +13,7 @@ resource "aws_subnet" "public" {
   availability_zone       = element(var.azs, count.index)
   map_public_ip_on_launch = true
   tags ={
-      "Name" = format("%s-pub-%d", var.vpc_name, count.index+1)
+      "Name" = format("%s-pub-%d", local.vpc_name, count.index+1)
     }
 }
 
@@ -46,7 +25,7 @@ resource "aws_subnet" "private" {
   availability_zone       = element(var.azs, count.index)
   map_public_ip_on_launch = false
   tags ={
-      "Name" = format("%s-pub-%d", var.vpc_name, count.index+1)
+      "Name" = format("%s-pub-%d", local.vpc_name, count.index+1)
     }
 }
 
@@ -55,7 +34,7 @@ resource "aws_internet_gateway" "this" {
   vpc_id = aws_vpc.this.id
 
   tags = {
-      "Name" = format("%s", var.vpc_name)
+      "Name" = format("%s", local.vpc_name)
     }
 }
 
@@ -63,7 +42,7 @@ resource "aws_route_table" "public" {
   vpc_id = aws_vpc.this.id
 
   tags = {
-      "Name" = format("%s-pub-rt", var.vpc_name)
+      "Name" = format("%s-pub-rt", local.vpc_name)
     }
 }
 
