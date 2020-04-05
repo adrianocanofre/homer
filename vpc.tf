@@ -1,5 +1,6 @@
 resource "aws_vpc" "this" {
   cidr_block = var.cidr
+  enable_dns_hostnames = true
   tags ={
       "Name" = format("%s", local.vpc_name)
     }
@@ -25,7 +26,7 @@ resource "aws_subnet" "private" {
   availability_zone       = element(var.azs, count.index)
   map_public_ip_on_launch = false
   tags ={
-      "Name" = format("%s-pub-%d", local.vpc_name, count.index+1)
+      "Name" = format("%s-priv-%d", local.vpc_name, count.index+1)
     }
 }
 
