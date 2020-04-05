@@ -4,36 +4,20 @@ provider "aws" {
   profile                 = "aws-terraform"
 }
 
-resource "aws_s3_bucket" "terraform_state" {
-  bucket = "homer-s3-state"
+terraform {
+  backend "s3" {
+    # Bucket config!
+    bucket         = "homer-s3-state"
+    key            = "global/s3/terraform.tfstate"
+    region         = "us-east-1"
+    profile  = "aws-terraform"
 
-  versioning {
-    enabled = true
-  }
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-}
-
-resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
-  name = "terraform-state-lock-dynamo-homer"
-  hash_key = "LockID"
-  read_capacity = 20
-  write_capacity = 20
-
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
-
-  tags = {
-    Name = "DynamoDB Terraform State Lock Table"
+   # DynamoDB table config!
+   dynamodb_table = "terraform-state-lock-dynamo-homer"
+   encrypt        = true
   }
 }
+
 
 resource "aws_vpc" "this" {
   cidr_block = var.cidr
