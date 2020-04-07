@@ -52,3 +52,8 @@ variable "http_protocol" {
 variable "region" {
   default = "us-east-1"
 }
+
+
+variable "key_par" {
+  default = "terraform_aws"
+}
