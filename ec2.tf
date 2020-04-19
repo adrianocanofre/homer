@@ -4,5 +4,5 @@ resource "aws_instance" "nginx" {
 	key_name = var.key_par
 	user_data = file("files/install_nginx.sh")
 	subnet_id = aws_subnet.private[1].id
-  vpc_security_group_ids = [aws_security_group.allow_tls.id]
+  vpc_security_group_ids = [aws_security_group.ec2.id]
 }

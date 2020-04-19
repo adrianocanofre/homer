@@ -1,9 +1,13 @@
 resource "aws_vpc" "this" {
   cidr_block = var.cidr
   enable_dns_hostnames = true
-  tags ={
+  tags = merge(
+    var.tags,
+    local.tags,
+    {
       "Name" = format("%s", local.vpc_name)
     }
+  )
 }
 
 resource "aws_subnet" "public" {
@@ -13,9 +17,13 @@ resource "aws_subnet" "public" {
   cidr_block              = element(var.cidr_public_subnet, count.index)
   availability_zone       = element(var.azs, count.index)
   map_public_ip_on_launch = true
-  tags ={
+  tags = merge(
+    var.tags,
+    local.tags,
+    {
       "Name" = format("%s-pub-%d", local.vpc_name, count.index+1)
     }
+  )
 }
 
 resource "aws_subnet" "private" {
@@ -25,26 +33,38 @@ resource "aws_subnet" "private" {
   cidr_block              = element(var.cidr_private_subnet, count.index)
   availability_zone       = element(var.azs, count.index)
   map_public_ip_on_launch = false
-  tags ={
+  tags = merge(
+    var.tags,
+    local.tags,
+    {
       "Name" = format("%s-priv-%d", local.vpc_name, count.index+1)
     }
+  )
 }
 
 
 resource "aws_internet_gateway" "this" {
   vpc_id = aws_vpc.this.id
 
-  tags = {
+  tags = merge(
+    var.tags,
+    local.tags,
+    {
       "Name" = format("%s", local.vpc_name)
     }
+  )
 }
 
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.this.id
 
-  tags = {
+  tags = merge(
+    var.tags,
+    local.tags,
+    {
       "Name" = format("%s-pub-rt", local.vpc_name)
     }
+  )
 }
 
 resource "aws_route" "public_internet_gateway" {
@@ -68,9 +88,13 @@ resource "aws_route_table" "private" {
 
   vpc_id = aws_vpc.this.id
 
-  tags = {
+  tags = merge(
+    var.tags,
+    local.tags,
+    {
       "Name" = format("%s-prvt-rt", local.vpc_name)
     }
+  )
 }
 
 resource "aws_route_table_association" "private" {

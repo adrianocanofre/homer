@@ -1,4 +1,15 @@
-# Terraform AWS
+# Homer
+
+This project create a simple infrastructure in AWS.
 
 
-## VPC
+## checks  
+
+ [] vpc
+  [] Subnets
+  [] Nat Gateway  
+
+  [] Ec2
+  [] LB
+  [] Target
+  [] sg  

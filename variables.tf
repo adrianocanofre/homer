@@ -31,6 +31,12 @@ variable "envs" {
   }
 }
 
+variable "tags" {
+  description = "A map of tags to add to all resources"
+  type        = map(string)
+  default     = {}
+}
+
 variable "all_cidr" {
   default = "0.0.0.0/0"
 }

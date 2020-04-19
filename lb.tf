@@ -4,8 +4,9 @@ resource "aws_lb" "this" {
   load_balancer_type = var.lb_type
   internal           = false
   subnets            = aws_subnet.public.*.id
-  security_groups    = [aws_security_group.allow_tls.id]
+  security_groups    = [aws_security_group.lb.id]
 
+  tags = merge(var.tags, local.tags)
   lifecycle {
     create_before_destroy = true
   }
@@ -18,13 +19,8 @@ resource "aws_lb_listener" "this" {
   protocol          = var.http_protocol
 
   default_action {
-    type = "fixed-response"
-
-    fixed_response {
-      content_type = "text/plain"
-      message_body = "HEALTHY"
-      status_code  = "200"
-    }
+    type = "forward"
+    target_group_arn = aws_lb_target_group.main.arn
   }
 }
 
@@ -37,10 +33,17 @@ resource "aws_lb_target_group" "main" {
   port        = var.http_port
   protocol    = var.http_protocol
 
+  tags = merge(var.tags, local.tags)
 
   depends_on = [aws_lb.this]
 
   lifecycle {
     create_before_destroy = true
   }
+}
+
+resource "aws_lb_target_group_attachment" "test" {
+  target_group_arn = aws_lb_target_group.main.arn
+  target_id        = aws_instance.nginx.id
+  port             = 80
 }
