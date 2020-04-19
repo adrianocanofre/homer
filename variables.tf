@@ -30,3 +30,30 @@ variable "envs" {
     prod = "prod"
   }
 }
+
+variable "all_cidr" {
+  default = "0.0.0.0/0"
+}
+
+variable "http_port" {
+  default = 80
+}
+
+
+variable "lb_type" {
+  default = "application"
+}
+
+
+variable "http_protocol" {
+  default ="HTTP"
+}
+
+variable "region" {
+  default = "us-east-1"
+}
+
+
+variable "key_par" {
+  default = "terraform_aws"
+}
