@@ -60,6 +60,14 @@ variable "region" {
 }
 
 
-variable "key_par" {
+variable "key_pair" {
   default = "terraform_aws"
+}
+
+variable "enable_monitoring" {
+  default = true
+}
+
+variable "app_name" {
+  default = "Homer"
 }
