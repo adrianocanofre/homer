@@ -4,7 +4,7 @@ resource "aws_lb" "this" {
   load_balancer_type = var.lb_type
   internal           = false
   subnets            = aws_subnet.public.*.id
-  security_groups    = [aws_security_group.lb.id]
+  security_groups    = [aws_security_group.alb.id]
 
   tags = merge(var.tags, local.tags)
   lifecycle {
@@ -49,7 +49,7 @@ resource "aws_launch_configuration" "this" {
   instance_type   = "t2.micro"
   key_name        = var.key_pair
   user_data       = file("files/install_nginx.sh")
-  security_groups = [aws_security_group.ec2.id]
+  security_groups = [aws_security_group.app.id]
 
 
   lifecycle {
