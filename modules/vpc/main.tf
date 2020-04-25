@@ -5,7 +5,7 @@ resource "aws_vpc" "this" {
     var.tags,
     local.tags,
     {
-      "Name" = format("%s", local.vpc_name)
+      "Name" = format("[%s]%s",var.workspace, var.vpc_name)
     }
   )
 }
@@ -21,7 +21,7 @@ resource "aws_subnet" "public" {
     var.tags,
     local.tags,
     {
-      "Name" = format("%s-pub-%d", local.vpc_name, count.index+1)
+      "Name" = format("[%s]%s-pub-%d",var.workspace, var.vpc_name, count.index+1)
     }
   )
 }
@@ -37,7 +37,7 @@ resource "aws_subnet" "private" {
     var.tags,
     local.tags,
     {
-      "Name" = format("%s-priv-%d", local.vpc_name, count.index+1)
+      "Name" = format("[%s]%s-priv-%d",var.workspace, var.vpc_name, count.index+1)
     }
   )
 }
@@ -50,7 +50,7 @@ resource "aws_internet_gateway" "this" {
     var.tags,
     local.tags,
     {
-      "Name" = format("%s", local.vpc_name)
+      "Name" = format("[%s]%s",var.workspace, var.vpc_name)
     }
   )
 }
@@ -62,7 +62,7 @@ resource "aws_route_table" "public" {
     var.tags,
     local.tags,
     {
-      "Name" = format("%s-pub-rt", local.vpc_name)
+      "Name" = format("[%s]%s-pub-rt", var.workspace, var.vpc_name)
     }
   )
 }
@@ -92,7 +92,7 @@ resource "aws_route_table" "private" {
     var.tags,
     local.tags,
     {
-      "Name" = format("%s-prvt-rt", local.vpc_name)
+      "Name" = format("[%s]%s-prvt-rt", var.workspace, var.vpc_name)
     }
   )
 }
