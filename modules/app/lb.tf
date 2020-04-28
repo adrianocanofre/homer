@@ -49,6 +49,7 @@ resource "aws_launch_configuration" "this" {
   instance_type   = var.ec2_type
   key_name        = var.key_pair
   user_data       = var.user_data
+  iam_instance_profile = aws_iam_instance_profile.app_profile.name
   security_groups = [aws_security_group.app.id]
 
 

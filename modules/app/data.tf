@@ -13,3 +13,18 @@ data "aws_ami" "ubuntu" {
 
   owners = ["099720109477"] # Canonical
 }
+
+
+data "aws_iam_policy_document" "ec2_ecr" {
+  statement {
+
+    actions = [
+      "ecr:*",
+    ]
+
+    resources = [
+      "*",
+    ]
+  }
+
+}

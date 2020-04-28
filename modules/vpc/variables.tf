@@ -13,19 +13,19 @@ variable "cidr" {
 variable "cidr_public_subnet" {
   description = "The cidr block of the desired subnet."
   type    = list
-  default = ""
+  default = [""]
 }
 
 variable "cidr_private_subnet" {
   description = "The cidr block of the desired subnet"
   type    = list
-  default = ""
+  default = [""]
 }
 
 variable "azs" {
   description = "The az for the subnets"
   type    = list
-  default = ""
+  default = [""]
 }
 
 variable "tags" {

@@ -64,6 +64,10 @@ variable "vpc" {
   default = ""
 }
 
+variable "image_mutability" {
+  default = "MUTABLE"
+}
+
 locals {
   lb_name  = format("%s-lb-%s",var.workspace, var.app_name)
   tg_name  = format("%s-tg-%s",var.workspace, var.app_name)

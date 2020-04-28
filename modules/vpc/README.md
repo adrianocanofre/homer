@@ -20,3 +20,12 @@ module "vpc"{
 | cidr_public_subnet | The cidr block of the desired subnet | `list` | `n/a` | `yes` |
 | cidr_private_subnet | The cidr block of the desired subnet | `list` | `n/a` | `yes` |
 | workspace | name of workspace(prod|dev) | `string` | `n/a` | `yes` |
+
+
+### Output  
+
+| Name | Description |
+|------|-------------|
+| vpc_id | The ID of the VPC |  
+| subnet_public | ID of the subnet public |  
+| subnet_private | ID of the subnet private |
