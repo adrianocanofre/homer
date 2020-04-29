@@ -1,5 +1,5 @@
 resource "aws_security_group" "alb" {
-  name        = "alb"
+  name        = format("[%s]alb",var.workspace)
   description = "Allow HTTP inbound traffic"
   vpc_id      = var.vpc
 
@@ -7,7 +7,7 @@ resource "aws_security_group" "alb" {
     var.tags,
     local.tags,
     {
-      Name = "allow_http"
+      Name = format("%s-allow_http",var.workspace)
     }
   )
 }
@@ -31,7 +31,7 @@ resource "aws_security_group_rule" "allow_lb_egress"{
 }
 
 resource "aws_security_group" "app" {
-  name        = "lb_to_ec2_v2"
+  name        = format("[%s]lb_to_ec2",var.workspace)
   description = "inbound traffic between LB and Ec2"
   vpc_id      = var.vpc
 
@@ -39,7 +39,7 @@ resource "aws_security_group" "app" {
     var.tags,
     local.tags,
     {
-      Name = "lb_to_ec2"
+      Name = format("%s-lb_to_ec2", var.workspace)
     }
   )
 }

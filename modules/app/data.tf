@@ -19,7 +19,8 @@ data "aws_iam_policy_document" "ec2_ecr" {
   statement {
 
     actions = [
-      "ecr:*",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
     ]
 
     resources = [
@@ -27,4 +28,15 @@ data "aws_iam_policy_document" "ec2_ecr" {
     ]
   }
 
+}
+
+data "aws_iam_policy_document" "app_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
 }
