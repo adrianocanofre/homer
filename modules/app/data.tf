@@ -1,9 +1,9 @@
-data "aws_ami" "ubuntu" {
+data "aws_ami" "amazon_linux" {
   most_recent = true
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-*"]
+    values = ["amzn-ami-hvm-????.??.?.????????-x86_64-gp2"]
   }
 
   filter {
@@ -11,7 +11,7 @@ data "aws_ami" "ubuntu" {
     values = ["hvm"]
   }
 
-  owners = ["099720109477"] # Canonical
+  owners = ["amazon"] # Canonical
 }
 
 

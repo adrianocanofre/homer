@@ -61,3 +61,12 @@ resource "aws_security_group_rule" "ec2_to_out"{
   security_group_id = aws_security_group.app.id
   cidr_blocks = [var.all_cidr]
 }
+
+resource "aws_security_group_rule" "ec2_to_out_2"{
+  type = "egress"
+  from_port = "443"
+  to_port  = "443"
+  protocol = "tcp"
+  security_group_id = aws_security_group.app.id
+  cidr_blocks = [var.all_cidr]
+}

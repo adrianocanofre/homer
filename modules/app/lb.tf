@@ -45,14 +45,14 @@ resource "aws_lb_target_group" "main" {
 
 resource "aws_launch_configuration" "this" {
   name_prefix     = local.lc_name
-  image_id        = data.aws_ami.ubuntu.id
+  image_id        = data.aws_ami.amazon_linux.id
   instance_type   = var.ec2_type
   key_name        = var.key_pair
-  user_data       = var.user_data
+  user_data       = templatefile(var.user_data, {REPOSITORY_URL=aws_ecr_repository.this.repository_url})
   iam_instance_profile = aws_iam_instance_profile.app_profile.name
   security_groups = [aws_security_group.app.id]
 
-
+  depends_on = [aws_ecr_repository.this]
   lifecycle {
     create_before_destroy = true
   }

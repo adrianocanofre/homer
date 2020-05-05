@@ -16,7 +16,7 @@ module "app_01"{
 
   app_name        = "homer-01"
   workspace       = local.env
-  user_data       = file("files/install_nginx.sh")
+  user_data       = "files/bootstrap.sh"
   public_subnets  = module.vpc.subnet_public
   private_subnets = module.vpc.subnet_private
   vpc             = module.vpc.vpc_id
