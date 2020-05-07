@@ -33,6 +33,14 @@ resource "aws_lb_target_group" "main" {
   port        = var.http_port
   protocol    = var.http_protocol
 
+  health_check {
+    healthy_threshold   = 3
+    unhealthy_threshold = 10
+    timeout             = 5
+    interval            = 10
+    path                = "/api/healthcheck"
+    port                = 80  
+  }
   tags = merge(var.tags, local.tags)
 
   depends_on = [aws_lb.this]

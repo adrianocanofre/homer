@@ -21,6 +21,7 @@ data "aws_iam_policy_document" "ec2_ecr" {
     actions = [
       "ecr:GetDownloadUrlForLayer",
       "ecr:BatchGetImage",
+      "ecr:GetAuthorizationToken",
     ]
 
     resources = [
