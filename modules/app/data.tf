@@ -15,7 +15,7 @@ data "aws_ami" "amazon_linux" {
 }
 
 
-data "aws_iam_policy_document" "ec2_ecr" {
+data "aws_iam_policy_document" "ec2_app" {
   statement {
 
     actions = [
@@ -25,10 +25,44 @@ data "aws_iam_policy_document" "ec2_ecr" {
     ]
 
     resources = [
-      "*",
+       "*"
     ]
   }
 
+  statement {
+
+    actions = [
+      "s3:ListAllMyBuckets"
+    ]
+
+    resources = [
+      "arn:aws:s3:::*",
+    ]
+  }
+
+  statement {
+
+    actions = [
+      "s3:ListBucket",
+      "s3:GetBucketLocation"
+    ]
+
+    resources = [
+      aws_s3_bucket.user_data.arn,
+    ]
+  }
+
+  statement {
+
+    actions = [
+      "s3:GetObject",
+      "s3:GetObjectAcl"
+    ]
+
+    resources = [
+      format("%s/*",aws_s3_bucket.user_data.arn)
+    ]
+  }
 }
 
 data "aws_iam_policy_document" "app_policy" {

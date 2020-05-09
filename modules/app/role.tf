@@ -12,5 +12,5 @@ resource "aws_iam_role_policy" "app_policy" {
   name = format("%s-app_policy", var.workspace)
   role = aws_iam_role.app_role.id
 
-  policy = data.aws_iam_policy_document.ec2_ecr.json
+  policy = data.aws_iam_policy_document.ec2_app.json
 }
