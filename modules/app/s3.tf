@@ -18,7 +18,7 @@ resource "aws_s3_bucket" "user_data" {
 
   tags = merge(var.tags, local.tags)
 }
-#
+
 # resource "aws_s3_bucket_object" "s3_folder" {
 #     bucket   = aws_s3_bucket.user_data.id
 #     acl      = "private"

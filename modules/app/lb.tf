@@ -56,7 +56,7 @@ resource "aws_launch_configuration" "this" {
   image_id        = data.aws_ami.amazon_linux.id
   instance_type   = var.ec2_type
   key_name        = var.key_pair
-  user_data       = templatefile(var.user_data, {REPOSITORY_URL=aws_ecr_repository.this.repository_url, BUCKET_NAME=aws_s3_bucket.user_data.id})
+  user_data       = templatefile(var.user_data, {REPOSITORY_URL=aws_ecr_repository.this.repository_url, BUCKET_NAME=aws_s3_bucket.user_data.id,ACCOUNT_ID=aws_ecr_repository.this.registry_id})
   iam_instance_profile = aws_iam_instance_profile.app_profile.name
   security_groups = [aws_security_group.app.id]
 
