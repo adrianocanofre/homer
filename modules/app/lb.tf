@@ -34,12 +34,12 @@ resource "aws_lb_target_group" "main" {
   protocol    = var.http_protocol
 
   health_check {
-    healthy_threshold   = 3
-    unhealthy_threshold = 10
-    timeout             = 5
-    interval            = 10
-    path                = "/api/healthcheck"
-    port                = 80
+    healthy_threshold   = var.health_check_healthy_threshold
+    unhealthy_threshold = var.health_check_unhealthy_threshold
+    timeout             = var.health_check_timeout
+    interval            = var.health_check_interval
+    path                = var.health_check_path
+    port                = var.health_check_port
   }
   tags = merge(var.tags, local.tags)
 

@@ -1,3 +1,4 @@
+###### Common ######
 variable "tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
@@ -6,38 +7,72 @@ variable "tags" {
 
 variable "app_name" {
   description = "Application Name"
-  default = "Homer"
+  default     = "Homer"
 }
 
 variable "region" {
   description = "Region to create the infrastructure"
-  default = "us-east-1"
+  default     = "us-east-1"
 }
 
 ###### Application ######
 variable "all_cidr" {
   description = ""
-  default = "0.0.0.0/0"
+  default     = "0.0.0.0/0"
 }
 
 variable "http_port" {
   description = ""
-  default = 80
+  default     = 80
 }
 
 variable "lb_type" {
   description = "The type of load balancer to create(application|network)"
-  default = "application"
+  default     = "application"
 }
 
 variable "http_protocol" {
   description = "Protocol HTTP"
-  default ="HTTP"
+  default     ="HTTP"
 }
 
+variable "health_check_path" {
+  description = "Health check use in target"
+  default     = "/api/healthcheck"
+}
+
+variable "health_check_healthy_threshold" {
+  description = ""
+  default     = 3
+}
+
+variable "health_check_unhealthy_threshold" {
+  description = ""
+  default     = 10
+}
+
+variable "health_check_timeout" {
+  description = ""
+  default     = 5
+}
+
+variable "health_check_interval" {
+  description = ""
+  default     = 10
+}
+
+variable "health_check_port" {
+  description = ""
+  default     = 80
+}
+
+variable "health_check_" {
+  description = ""
+  default     =""
+}
 variable "key_pair" {
   description = "The key name of the Key Pair to use for the instance"
-  default = "terraform_aws"
+  default     = "terraform_aws"
 }
 
 variable "workspace" {
