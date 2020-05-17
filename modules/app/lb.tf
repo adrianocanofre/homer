@@ -29,7 +29,7 @@ resource "aws_lb_target_group" "main" {
 
   name        = local.tg_name
 
-  vpc_id      = var.vpc
+  vpc_id      = var.vpc_id
   port        = var.http_port
   protocol    = var.http_protocol
 

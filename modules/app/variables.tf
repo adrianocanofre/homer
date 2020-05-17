@@ -66,10 +66,6 @@ variable "health_check_port" {
   default     = 80
 }
 
-variable "health_check_" {
-  description = ""
-  default     =""
-}
 variable "key_pair" {
   description = "The key name of the Key Pair to use for the instance"
   default     = "terraform_aws"
@@ -95,8 +91,8 @@ variable "private_subnets" {
   default = ""
 }
 
-variable "vpc" {
-  default = ""
+variable "vpc_id" {
+  default = null
 }
 
 variable "image_mutability" {
@@ -106,7 +102,7 @@ variable "image_mutability" {
 ### S3 ###
 variable "bucket_name_env" {
   description = "Application Name"
-  default     = "homer-01"
+  default     = "homer"
 }
 
 variable "bucket_name" {
@@ -119,12 +115,14 @@ variable "version_enable" {
 variable "create_bucket" {
   default = false
 }
+
 locals {
-  lb_name  = format("%s-lb-%s",var.workspace, var.app_name)
-  tg_name  = format("%s-tg-%s",var.workspace, var.app_name)
-  asg_name = format("%s-asg-%s-",var.workspace, var.app_name)
-  lc_name  = format("%s-lc%s",var.workspace, var.app_name)
-  bucket_name = format("%s-", var.bucket_name != "" ? var.bucket_name : var.app_name )
+  lb_name     = format("%s-lb-%s",var.workspace, var.app_name)
+  tg_name     = format("%s-tg-%s",var.workspace, var.app_name)
+  asg_name    = format("%s-asg-%s-",var.workspace, var.app_name)
+  lc_name     = format("%s-lc%s",var.workspace, var.app_name)
+  bucket_name = format("%s-", var.bucket_name)
+  bucket_env  = format("%s-userdata-", var.bucket_name_env)
   tags = {
     Environment = var.workspace
     Owner       = "terraform"

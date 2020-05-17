@@ -15,5 +15,10 @@ output "lb_dns_name" {
 
 output "ec2_sg" {
   description = "The ID of the app security group."
-  value       = aws_security_group.this.*.id,
+  value       = aws_security_group.app.id
+}
+
+output "lb" {
+  description = "The ID of the app security group."
+  value       = aws_security_group.alb.id
 }
