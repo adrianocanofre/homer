@@ -1,6 +1,7 @@
 resource "aws_vpc" "this" {
-  cidr_block = var.cidr
+  cidr_block           = var.cidr
   enable_dns_hostnames = true
+  enable_dns_support   = true
   tags = merge(
     var.tags,
     local.tags,
@@ -100,7 +101,7 @@ resource "aws_route_table" "private" {
 resource "aws_route_table_association" "private" {
   count = length(var.cidr_private_subnet)
 
-  subnet_id = element(aws_subnet.private.*.id, count.index)
+  subnet_id      = element(aws_subnet.private.*.id, count.index)
   route_table_id = aws_route_table.private.id
 }
 
@@ -121,8 +122,7 @@ resource "aws_eip" "this" {
 resource "aws_nat_gateway" "this" {
 
   allocation_id = aws_eip.this.id
-  subnet_id = aws_subnet.public.0.id
-
+  subnet_id     = aws_subnet.public.0.id
 
   depends_on = [aws_internet_gateway.this]
 }

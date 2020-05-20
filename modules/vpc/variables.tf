@@ -1,31 +1,31 @@
 variable "vpc_name" {
   description = "Name of VPC"
-  type    = string
-  default = "vpc"
+  type        = string
+  default     = "vpc"
 }
 
 variable "cidr" {
   description = "The cidr block of the desired VPC"
-  type    = string
-  default = "10.0.0.0/20"
+  type        = string
+  default     = "10.0.0.0/20"
 }
 
 variable "cidr_public_subnet" {
   description = "The cidr block of the desired subnet."
-  type    = list
-  default = [""]
+  type        = list
+  default     = [""]
 }
 
 variable "cidr_private_subnet" {
   description = "The cidr block of the desired subnet"
-  type    = list
-  default = [""]
+  type        = list
+  default     = [""]
 }
 
 variable "azs" {
   description = "The az for the subnets"
-  type    = list
-  default = [""]
+  type        = list
+  default     = [""]
 }
 
 variable "tags" {
