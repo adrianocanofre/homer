@@ -1,5 +1,5 @@
 resource "aws_security_group" "alb" {
-  name        = format("[%s]alb",var.workspace)
+  name        = format("[%s]-[%s]-alb",var.workspace, var.app_name)
   description = "Allow HTTP inbound traffic"
   vpc_id      = var.vpc_id
 
@@ -23,7 +23,7 @@ resource "aws_security_group_rule" "allow_lb_egress"{
 }
 
 resource "aws_security_group" "app" {
-  name        = format("[%s]lb_to_ec2",var.workspace)
+  name        = format("[%s][%s]lb_to_ec2",var.workspace,var.app_name)
   description = "inbound traffic between LB and Ec2"
   vpc_id      = var.vpc_id
 
@@ -46,13 +46,12 @@ resource "aws_security_group_rule" "lb_to_ec2"{
   description              = "Default Rule"
 }
 
-
 ### SG by User For Ec2###
 
 resource "aws_security_group" "ec2_by_user" {
   count = var.e_rule == null ? 0 : 1
   name        = local.sg_by_user_name
-  description = "olaa"
+  description = var.sg_by_user_description
 
   dynamic "egress" {
     for_each = var.e_rule
