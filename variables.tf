@@ -24,6 +24,8 @@ variable "region" {
   default = "us-east-1"
 }
 
+variable "e_rule" {}
+
 locals {
   env      = lookup(var.envs, terraform.workspace)
   tags = {

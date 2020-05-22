@@ -1,7 +1,7 @@
 resource "aws_security_group" "alb" {
   name        = format("[%s]alb",var.workspace)
   description = "Allow HTTP inbound traffic"
-  vpc_id      = var.vpc
+  vpc_id      = var.vpc_id
 
   tags = merge(
     var.tags,
@@ -12,28 +12,20 @@ resource "aws_security_group" "alb" {
   )
 }
 
-resource "aws_security_group_rule" "allow_lb_ingress"{
-  type = "ingress"
-  from_port = var.http_port
-  to_port  = var.http_port
-  protocol = "tcp"
-  security_group_id = aws_security_group.alb.id
-  cidr_blocks = [var.all_cidr]
-}
-
 resource "aws_security_group_rule" "allow_lb_egress"{
-  type = "egress"
-  from_port = var.http_port
-  to_port  = var.http_port
-  protocol = "tcp"
-  security_group_id = aws_security_group.alb.id
+  type                     = "egress"
+  from_port                = var.e_port
+  to_port                  = var.e_port
+  protocol                 = var.e_protocol
+  security_group_id        = aws_security_group.alb.id
   source_security_group_id = aws_security_group.app.id
+  description              = "Default Rule"
 }
 
 resource "aws_security_group" "app" {
   name        = format("[%s]lb_to_ec2",var.workspace)
   description = "inbound traffic between LB and Ec2"
-  vpc_id      = var.vpc
+  vpc_id      = var.vpc_id
 
   tags = merge(
     var.tags,
@@ -45,28 +37,31 @@ resource "aws_security_group" "app" {
 }
 
 resource "aws_security_group_rule" "lb_to_ec2"{
-  type = "ingress"
-  from_port = var.http_port
-  to_port  = var.http_port
-  protocol = "tcp"
-  security_group_id = aws_security_group.app.id
+  type                     = "ingress"
+  from_port                = var.e_port
+  to_port                  = var.e_port
+  protocol                 = var.e_protocol
+  security_group_id        = aws_security_group.app.id
   source_security_group_id = aws_security_group.alb.id
+  description              = "Default Rule"
 }
 
-resource "aws_security_group_rule" "ec2_to_out"{
-  type = "egress"
-  from_port = var.http_port
-  to_port  = var.http_port
-  protocol = "tcp"
-  security_group_id = aws_security_group.app.id
-  cidr_blocks = [var.all_cidr]
-}
 
-resource "aws_security_group_rule" "ec2_to_out_2"{
-  type = "egress"
-  from_port = "443"
-  to_port  = "443"
-  protocol = "tcp"
-  security_group_id = aws_security_group.app.id
-  cidr_blocks = [var.all_cidr]
+### SG by User For Ec2###
+
+resource "aws_security_group" "ec2_by_user" {
+  count = var.e_rule == null ? 0 : 1
+  name        = local.sg_by_user_name
+  description = "olaa"
+
+  dynamic "egress" {
+    for_each = var.e_rule
+    content {
+      from_port = egress.value["from_port"]
+      to_port   = egress.value["to_port"]
+      protocol  = egress.value["protocol"]
+      cidr_blocks = egress.value["cidr_blocks"]
+      description   = egress.value["description"]
+    }
+  }
 }

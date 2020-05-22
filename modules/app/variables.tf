@@ -26,6 +26,15 @@ variable "http_port" {
   default     = 80
 }
 
+variable "e_port" {
+  description = ""
+  default     = 80
+}
+
+variable "e_protocol" {
+  description = ""
+  default     = "tcp"
+}
 variable "lb_type" {
   description = "The type of load balancer to create(application|network)"
   default     = "application"
@@ -116,6 +125,19 @@ variable "create_bucket" {
   default = false
 }
 
+### SG ###
+variable "sg_by_user_name" {
+  default = null
+}
+
+variable "sg_by_user_description" {
+  default = "[Default] SG the application"
+}
+
+variable "e_rule" {
+  default = null
+}
+
 locals {
   lb_name     = format("%s-lb-%s",var.workspace, var.app_name)
   tg_name     = format("%s-tg-%s",var.workspace, var.app_name)
@@ -123,6 +145,7 @@ locals {
   lc_name     = format("%s-lc%s",var.workspace, var.app_name)
   bucket_name = format("%s-", var.bucket_name)
   bucket_env  = format("%s-userdata-", var.bucket_name_env)
+  sg_by_user_name = format("%s-Ec2", var.app_name)
   tags = {
     Environment = var.workspace
     Owner       = "terraform"
