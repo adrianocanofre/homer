@@ -12,6 +12,16 @@ resource "aws_security_group" "alb" {
   )
 }
 
+resource "aws_security_group_rule" "allow_lb_ingress"{
+  type              = "ingress"
+  from_port         = var.http_port
+  to_port           = var.http_port
+  protocol          = "tcp"
+  security_group_id = aws_security_group.alb.id
+  cidr_blocks       = [var.all_cidr]
+  description              = "Default Rule"
+}
+
 resource "aws_security_group_rule" "allow_lb_egress"{
   type                     = "egress"
   from_port                = var.e_port
@@ -45,6 +55,31 @@ resource "aws_security_group_rule" "lb_to_ec2"{
   source_security_group_id = aws_security_group.alb.id
   description              = "Default Rule"
 }
+
+### SG between Apps ###
+
+resource "aws_security_group_rule" "e_ec2_to_lb"{
+  count = var.sg_app == null ? 0 : 1
+  type                     = "egress"
+  from_port                = var.e_port
+  to_port                  = var.e_port
+  protocol                 = var.e_protocol
+  security_group_id        = aws_security_group.app.id
+  source_security_group_id = var.sg_app
+  description              = "Default Rule"
+}
+
+resource "aws_security_group_rule" "i_lb_to_ec2"{
+  count = var.sg_app == null ? 0 : 1
+  type                     = "ingress"
+  from_port                = var.e_port
+  to_port                  = var.e_port
+  protocol                 = var.e_protocol
+  security_group_id        = aws_security_group.alb.id
+  source_security_group_id = var.sg_app
+  description              = "Default Rule"
+}
+
 
 ### SG by User For Ec2###
 
