@@ -1,4 +1,5 @@
 resource "aws_lb" "this" {
+  count = var.create_lb ? 1 : 0
 
   name               = local.lb_name
   load_balancer_type = var.lb_type
@@ -14,13 +15,35 @@ resource "aws_lb" "this" {
 }
 
 resource "aws_lb_listener" "this" {
-  load_balancer_arn = aws_lb.this.arn
+  count = var.create_lb ? 1 : 0
+
+  load_balancer_arn = aws_lb.this.0.arn
   port              = var.http_port
   protocol          = var.http_protocol
 
   default_action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "application/json"
+      message_body = "Fixed response content"
+      status_code  = "200"
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "this" {
+  listener_arn = local.lb_listener_arn
+
+  action {
     type = "forward"
-    target_group_arn = aws_lb_target_group.main.arn
+    target_group_arn = local.lb_target_arn
+  }
+
+  condition {
+    path_pattern {
+      values = [local.condition_path]
+    }
   }
 }
 
@@ -42,8 +65,6 @@ resource "aws_lb_target_group" "main" {
     port                = var.health_check_port
   }
   tags = merge(var.tags, local.tags)
-
-  depends_on = [aws_lb.this]
 
   lifecycle {
     create_before_destroy = true

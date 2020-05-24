@@ -19,7 +19,7 @@ resource "aws_security_group_rule" "allow_lb_ingress"{
   protocol          = "tcp"
   security_group_id = aws_security_group.alb.id
   cidr_blocks       = [var.all_cidr]
-  description              = "Default Rule"
+  description       = "Default Rule"
 }
 
 resource "aws_security_group_rule" "allow_lb_egress"{
@@ -60,6 +60,7 @@ resource "aws_security_group_rule" "lb_to_ec2"{
 
 resource "aws_security_group_rule" "e_ec2_to_lb"{
   count = var.sg_app == null ? 0 : 1
+
   type                     = "egress"
   from_port                = var.e_port
   to_port                  = var.e_port
@@ -71,6 +72,7 @@ resource "aws_security_group_rule" "e_ec2_to_lb"{
 
 resource "aws_security_group_rule" "i_lb_to_ec2"{
   count = var.sg_app == null ? 0 : 1
+
   type                     = "ingress"
   from_port                = var.e_port
   to_port                  = var.e_port
@@ -85,6 +87,7 @@ resource "aws_security_group_rule" "i_lb_to_ec2"{
 
 resource "aws_security_group" "ec2_by_user" {
   count = var.e_rule == null ? 0 : 1
+
   name        = local.sg_by_user_name
   description = var.sg_by_user_description
 

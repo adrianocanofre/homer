@@ -15,26 +15,36 @@ variable "region" {
   default     = "us-east-1"
 }
 
+variable "key_pair" {
+  description = "The key name of the Key Pair to use for the instance"
+  default     = "terraform_aws"
+}
+
+variable "workspace" {
+  default = ""
+}
+
 ###### Application ######
-variable "all_cidr" {
-  description = ""
-  default     = "0.0.0.0/0"
+variable "create_lb" {
+  default = true
 }
 
-variable "http_port" {
-  description = ""
-  default     = 80
+variable "app_lb_arn" {
+  default = ""
 }
 
-variable "e_port" {
-  description = ""
-  default     = 80
+variable "app_lb_listener_arn" {
+  default = ""
 }
 
-variable "e_protocol" {
-  description = ""
-  default     = "tcp"
+variable "app_lb_target_arn" {
+  default = ""
 }
+
+variable "lb_condition_path"{
+  default = null
+}
+
 variable "lb_type" {
   description = "The type of load balancer to create(application|network)"
   default     = "application"
@@ -73,15 +83,6 @@ variable "health_check_interval" {
 variable "health_check_port" {
   description = ""
   default     = 80
-}
-
-variable "key_pair" {
-  description = "The key name of the Key Pair to use for the instance"
-  default     = "terraform_aws"
-}
-
-variable "workspace" {
-  default = ""
 }
 
 variable "user_data" {
@@ -126,6 +127,11 @@ variable "create_bucket" {
 }
 
 ### SG ###
+variable "all_cidr" {
+  description = ""
+  default     = "0.0.0.0/0"
+}
+
 variable "sg_by_user_name" {
   default = null
 }
@@ -138,14 +144,37 @@ variable "e_rule" {
   default = null
 }
 
+variable "sg_app" {
+  default = null
+}
+
+variable "e_port" {
+  description = ""
+  default     = 80
+}
+
+variable "e_protocol" {
+  description = ""
+  default     = "tcp"
+}
+
+variable "http_port" {
+  description = ""
+  default     = 80
+}
+
 locals {
-  lb_name     = format("%s-lb-%s",var.workspace, var.app_name)
-  tg_name     = format("%s-tg-%s",var.workspace, var.app_name)
-  asg_name    = format("%s-asg-%s-",var.workspace, var.app_name)
-  lc_name     = format("%s-lc%s",var.workspace, var.app_name)
-  bucket_name = format("%s-", var.bucket_name)
-  bucket_env  = format("%s-userdata-", var.bucket_name_env)
+  lb_name         = format("%s-lb-%s",var.workspace, var.app_name)
+  tg_name         = format("%s-tg-%s",var.workspace, var.app_name)
+  asg_name        = format("%s-asg-%s-",var.workspace, var.app_name)
+  lc_name         = format("%s-lc%s",var.workspace, var.app_name)
+  bucket_name     = format("%s-", var.bucket_name)
+  bucket_env      = format("%s-userdata-", var.bucket_name_env)
   sg_by_user_name = format("%s-Ec2", var.app_name)
+  # lb_arn          = var.create_lb ? aws_lb.this.0.arn : var.app_lb_arn
+  lb_target_arn   = var.create_lb ? aws_lb_target_group.main.arn : var.app_lb_target_arn
+  lb_listener_arn = var.create_lb ? aws_lb_listener.this.0.arn : var.app_lb_listener_arn
+  condition_path  = format("/%s/*", var.lb_condition_path == null ? var.app_name : var.lb_condition_path)
   tags = {
     Environment = var.workspace
     Owner       = "terraform"
