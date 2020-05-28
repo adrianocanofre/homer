@@ -1,5 +1,5 @@
 resource "aws_lb" "this" {
-  count = var.create_lb ? 1 : 0
+  count = local.create_lb
 
   name               = local.lb_name
   load_balancer_type = var.lb_type
@@ -15,7 +15,7 @@ resource "aws_lb" "this" {
 }
 
 resource "aws_lb_listener" "this" {
-  count = var.create_lb ? 1 : 0
+  count = local.create_lb
 
   load_balancer_arn = aws_lb.this.0.arn
   port              = var.http_port
