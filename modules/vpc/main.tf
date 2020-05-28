@@ -1,11 +1,12 @@
 resource "aws_vpc" "this" {
-  cidr_block = var.cidr
+  cidr_block           = var.cidr
   enable_dns_hostnames = true
+  enable_dns_support   = true
   tags = merge(
     var.tags,
     local.tags,
     {
-      "Name" = format("%s", local.vpc_name)
+      "Name" = format("[%s]%s",var.workspace, var.vpc_name)
     }
   )
 }
@@ -21,7 +22,7 @@ resource "aws_subnet" "public" {
     var.tags,
     local.tags,
     {
-      "Name" = format("%s-pub-%d", local.vpc_name, count.index+1)
+      "Name" = format("[%s]%s-pub-%d",var.workspace, var.vpc_name, count.index+1)
     }
   )
 }
@@ -37,7 +38,7 @@ resource "aws_subnet" "private" {
     var.tags,
     local.tags,
     {
-      "Name" = format("%s-priv-%d", local.vpc_name, count.index+1)
+      "Name" = format("[%s]%s-priv-%d",var.workspace, var.vpc_name, count.index+1)
     }
   )
 }
@@ -50,7 +51,7 @@ resource "aws_internet_gateway" "this" {
     var.tags,
     local.tags,
     {
-      "Name" = format("%s", local.vpc_name)
+      "Name" = format("[%s]%s",var.workspace, var.vpc_name)
     }
   )
 }
@@ -62,7 +63,7 @@ resource "aws_route_table" "public" {
     var.tags,
     local.tags,
     {
-      "Name" = format("%s-pub-rt", local.vpc_name)
+      "Name" = format("[%s]%s-pub-rt", var.workspace, var.vpc_name)
     }
   )
 }
@@ -92,7 +93,7 @@ resource "aws_route_table" "private" {
     var.tags,
     local.tags,
     {
-      "Name" = format("%s-prvt-rt", local.vpc_name)
+      "Name" = format("[%s]%s-prvt-rt", var.workspace, var.vpc_name)
     }
   )
 }
@@ -100,7 +101,7 @@ resource "aws_route_table" "private" {
 resource "aws_route_table_association" "private" {
   count = length(var.cidr_private_subnet)
 
-  subnet_id = element(aws_subnet.private.*.id, count.index)
+  subnet_id      = element(aws_subnet.private.*.id, count.index)
   route_table_id = aws_route_table.private.id
 }
 
@@ -121,8 +122,7 @@ resource "aws_eip" "this" {
 resource "aws_nat_gateway" "this" {
 
   allocation_id = aws_eip.this.id
-  subnet_id = aws_subnet.public.0.id
-
+  subnet_id     = aws_subnet.public.0.id
 
   depends_on = [aws_internet_gateway.this]
 }
