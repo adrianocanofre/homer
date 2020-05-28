@@ -1,11 +1,11 @@
 output "lb_id" {
   description = "The ID of the load balancer."
-  value       = aws_lb.this.0.id
+  value       = concat(aws_lb.this.*.id, [""])[0]
 }
 
 output "lb_arn" {
   description = "The ARN of the load balancer."
-  value       = aws_lb.this.0.arn
+  value       = concat(aws_lb.this.*.arn, [""])[0]
 }
 
 
@@ -14,7 +14,7 @@ output "target_arn" {
 }
 
 output "lb_listener_arn" {
-  value = aws_lb_listener.this.0.arn
+  value = concat(aws_lb_listener.this.*.arn, [""])[0]
 }
 
 output "sg_ec2" {

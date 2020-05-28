@@ -172,7 +172,6 @@ locals {
   bucket_env      = format("%s-userdata-", var.bucket_name_env)
   sg_by_user_name = format("%s-Ec2", var.app_name)
   # lb_arn          = var.create_lb ? aws_lb.this.0.arn : var.app_lb_arn
-  lb_target_arn   = var.create_lb ? aws_lb_target_group.main.arn : var.app_lb_target_arn
   lb_listener_arn = var.create_lb ? aws_lb_listener.this.0.arn : var.app_lb_listener_arn
   condition_path  = format("/%s/*", var.lb_condition_path == null ? var.app_name : var.lb_condition_path)
   tags = {
