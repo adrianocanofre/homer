@@ -1,10 +1,25 @@
-resource "aws_autoscaling_schedule" "this" {
-  scheduled_action_name  = var.scheduled_action_name
-  min_size               = var.schedule_min_size
-  max_size               = var.schedule_max_size
-  desired_capacity       = var.schedule_desired_capacity
-  start_time             = var.schedule_start_time
-  end_time               = var.schedule_end_time
-  recurrence             = var.schedule_recurrence
+resource "aws_autoscaling_schedule" "scaling_down" {
+  count = var.scheduled_recurrence_down == null ? 0 : 1
+
+  scheduled_action_name  = format("%s_down",local.scheduled_action_name)
+  min_size               = var.scheduled_min_size
+  max_size               = var.scheduled_max_size
+  desired_capacity       = var.scheduled_desired_capacity
+  start_time             = var.scheduled_start_time
+  end_time               = var.scheduled_end_time
+  recurrence             = var.scheduled_recurrence_down
+  autoscaling_group_name = aws_autoscaling_group.this.name
+}
+
+resource "aws_autoscaling_schedule" "scaling_up" {
+  count = var.scheduled_recurrence_up == null ? 0 : 1
+
+  scheduled_action_name  = format("%s_up",local.scheduled_action_name)
+  min_size               = var.scheduled_min_size
+  max_size               = var.scheduled_max_size
+  desired_capacity       = var.scheduled_desired_capacity
+  start_time             = var.scheduled_start_time
+  end_time               = var.scheduled_end_time
+  recurrence             = var.scheduled_recurrence_up
   autoscaling_group_name = aws_autoscaling_group.this.name
 }
