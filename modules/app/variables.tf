@@ -152,6 +152,62 @@ variable "scheduled_recurrence_down" {
 variable "scheduled_recurrence_up" {
   default = null
 }
+
+variable "scaling_adjustment_type"{
+  default = "ChangeInCapacity"
+}
+variable "scaling_cooldown" {
+
+  default = "300"
+}
+
+variable "scaling_adjustment_up" {
+  default = "1"
+}
+
+variable "scaling_adjustment_down" {
+  default = "-1"
+}
+
+variable "scaling_policy_type" {
+  default = "SimpleScaling"
+}
+
+variable "metric_namespace"{
+  default = "AWS/EC2"
+}
+
+variable "metric_name" {
+  default = "CPUUtilization"
+}
+
+variable "metric_period" {
+  default = "300"
+}
+
+variable "metric_statistic" {
+  default = "Average"
+}
+
+variable "metric_threshold_high" {
+  default = "80"
+}
+
+variable "metric_threshold_low" {
+  default = "30"
+}
+
+variable "metric_evaluation_periods" {
+  default = "5"
+}
+
+variable "metric_comparison_operator_low" {
+  default = "LessThanOrEqualToThreshold"
+}
+
+variable "metric_comparison_operator_high" {
+  default = "GreaterThanOrEqualToThreshold"
+}
 ### S3 ###
 variable "bucket_name_env" {
   description = "Application Name"
