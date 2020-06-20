@@ -1,5 +1,5 @@
 resource "aws_lb" "this" {
-  count = local.create_lb
+  count = var.create_lb ? 1 : 0
 
   name               = local.lb_name
   load_balancer_type = var.lb_type
@@ -15,7 +15,7 @@ resource "aws_lb" "this" {
 }
 
 resource "aws_lb_listener" "this" {
-  count = local.create_lb
+  count = var.create_lb ? 1 : 0
 
   load_balancer_arn = aws_lb.this.0.arn
   port              = var.http_port
@@ -91,8 +91,9 @@ resource "aws_autoscaling_group" "this" {
   name_prefix          = local.asg_name
   launch_configuration = aws_launch_configuration.this.name
   vpc_zone_identifier  = var.private_subnets
-  min_size             = 1
-  max_size             = 2
+  min_size             = var.asg_min_size
+  max_size             = var.asg_max_size
+  desired_capacity     = var.asg_desired_capacity
   target_group_arns    = [aws_lb_target_group.main.arn]
 
   tags = [{

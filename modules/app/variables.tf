@@ -50,6 +50,18 @@ variable "lb_type" {
   default     = "application"
 }
 
+variable "asg_min_size" {
+  default = 1
+}
+
+variable "asg_max_size" {
+  default = 2
+}
+
+variable "asg_desired_capacity" {
+  default = 1
+}
+
 variable "http_protocol" {
   description = "Protocol HTTP"
   default     ="HTTP"
@@ -109,6 +121,93 @@ variable "image_mutability" {
   default = "MUTABLE"
 }
 
+variable "scheduled_action_name" {
+  default = null
+}
+
+variable "scheduled_min_size" {
+  default = null
+}
+
+variable "scheduled_max_size" {
+  default = null
+}
+
+variable "scheduled_desired_capacity" {
+  default = null
+}
+
+variable "scheduled_start_time" {
+  default = null
+}
+
+variable "scheduled_end_time" {
+  default = null
+}
+
+variable "scheduled_recurrence_down" {
+  default = null
+}
+
+variable "scheduled_recurrence_up" {
+  default = null
+}
+
+variable "scaling_adjustment_type"{
+  default = "ChangeInCapacity"
+}
+variable "scaling_cooldown" {
+
+  default = "300"
+}
+
+variable "scaling_adjustment_up" {
+  default = "1"
+}
+
+variable "scaling_adjustment_down" {
+  default = "-1"
+}
+
+variable "scaling_policy_type" {
+  default = "SimpleScaling"
+}
+
+variable "metric_namespace"{
+  default = "AWS/EC2"
+}
+
+variable "metric_name" {
+  default = "CPUUtilization"
+}
+
+variable "metric_period" {
+  default = "300"
+}
+
+variable "metric_statistic" {
+  default = "Average"
+}
+
+variable "metric_threshold_high" {
+  default = "80"
+}
+
+variable "metric_threshold_low" {
+  default = "30"
+}
+
+variable "metric_evaluation_periods" {
+  default = "5"
+}
+
+variable "metric_comparison_operator_low" {
+  default = "LessThanOrEqualToThreshold"
+}
+
+variable "metric_comparison_operator_high" {
+  default = "GreaterThanOrEqualToThreshold"
+}
 ### S3 ###
 variable "bucket_name_env" {
   description = "Application Name"
@@ -161,21 +260,4 @@ variable "e_protocol" {
 variable "http_port" {
   description = ""
   default     = 80
-}
-
-locals {
-  lb_name         = format("%s-lb-%s",var.workspace, var.app_name)
-  tg_name         = format("%s-tg-%s",var.workspace, var.app_name)
-  asg_name        = format("%s-asg-%s-",var.workspace, var.app_name)
-  lc_name         = format("%s-lc%s",var.workspace, var.app_name)
-  bucket_name     = format("%s-", var.bucket_name)
-  bucket_env      = format("%s-userdata-", var.bucket_name_env)
-  sg_by_user_name = format("%s-Ec2", var.app_name)
-  create_lb       = var.app_lb_listener_arn == null ? 1 : 0
-  lb_listener_arn = var.app_lb_listener_arn == null ? aws_lb_listener.this.0.arn : var.app_lb_listener_arn
-  condition_path  = format("/%s/*", var.lb_condition_path == null ? var.app_name : var.lb_condition_path)
-  tags = {
-    Environment = var.workspace
-    Owner       = "terraform"
-  }
 }

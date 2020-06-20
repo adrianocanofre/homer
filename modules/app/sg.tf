@@ -59,26 +59,28 @@ resource "aws_security_group_rule" "lb_to_ec2"{
 ### SG between Apps ###
 
 resource "aws_security_group_rule" "e_ec2_to_lb"{
-  count = var.sg_app == null ? 0 : 1
+  count = var.sg_app == null ? 0 : length(var.sg_app)
 
+  
   type                     = "egress"
   from_port                = var.e_port
   to_port                  = var.e_port
   protocol                 = var.e_protocol
   security_group_id        = aws_security_group.app.id
-  source_security_group_id = var.sg_app
+  source_security_group_id = var.sg_app[count.index]
   description              = "Default Rule"
 }
 
-resource "aws_security_group_rule" "i_lb_to_ec2"{
-  count = var.sg_app == null ? 0 : 1
+resource "aws_security_group_rule" "i_lb_from_ec2"{
+  count = var.sg_app == null ? 0 : length(var.sg_app)
 
+  
   type                     = "ingress"
   from_port                = var.e_port
   to_port                  = var.e_port
   protocol                 = var.e_protocol
   security_group_id        = aws_security_group.alb.id
-  source_security_group_id = var.sg_app
+  source_security_group_id = var.sg_app[count.index]
   description              = "Default Rule"
 }
 
