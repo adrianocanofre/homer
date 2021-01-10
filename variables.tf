@@ -1,7 +1,7 @@
 ###### Common ######
 variable "envs" {
   description = "Define a workspace"
-  type = map
+  type        = map
   default = {
     dev  = "dev"
     prod = "prod"
@@ -16,18 +16,16 @@ variable "tags" {
 
 variable "app_name" {
   description = "Application Name"
-  default = "Homer"
+  default     = "Homer"
 }
 
 variable "region" {
   description = "Region to create the infrastructure"
-  default = "us-east-1"
+  default     = "us-east-1"
 }
 
-variable "e_rule" {}
-
 locals {
-  env      = lookup(var.envs, terraform.workspace)
+  env = lookup(var.envs, terraform.workspace)
   tags = {
     Environment = local.env
     Owner       = "terraform"

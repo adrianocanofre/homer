@@ -2,7 +2,6 @@ resource "aws_s3_bucket" "user_data" {
   bucket_prefix = format("%s-userdata-", var.bucket_name_env)
   acl           = "private"
   force_destroy = true
-  region        = var.region
 
   versioning {
     enabled = var.version_enable
@@ -11,7 +10,7 @@ resource "aws_s3_bucket" "user_data" {
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        sse_algorithm     = "aws:kms"
+        sse_algorithm = "aws:kms"
       }
     }
   }
@@ -20,11 +19,10 @@ resource "aws_s3_bucket" "user_data" {
 }
 
 resource "aws_s3_bucket" "this" {
-  count = var.create_bucket ? 1 : 0
+  count         = var.create_bucket ? 1 : 0
   bucket_prefix = local.bucket_name
   acl           = "private"
   force_destroy = true
-  region        = var.region
 
   versioning {
     enabled = var.version_enable
@@ -33,7 +31,7 @@ resource "aws_s3_bucket" "this" {
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        sse_algorithm     = "aws:kms"
+        sse_algorithm = "aws:kms"
       }
     }
   }
