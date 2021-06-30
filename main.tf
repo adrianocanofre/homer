@@ -1,45 +1,16 @@
-provider "aws" {
-  region                  = "us-east-1"
-  shared_credentials_file = "$HOME/.aws/credentials"
-}
-
-data "aws_ami" "ubuntu" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"] # Canonical
-}
-
 resource "aws_instance" "web" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
-  key_name      = "homer"
+  instance_type = var.ec2_type
+  key_name      = var.key_name
   tags = {
     Name = "teste-homer"
   }
 }
 
-data "aws_vpc" "default" {
-  default = true
-}
-
-data "aws_subnet_ids" "default" {
-  vpc_id = data.aws_vpc.default.id
-}
-
 resource "aws_lb" "this" {
-  name               = "teste-lb"
-  internal           = true
-  load_balancer_type = "application"
+  name               = var.lb_name
+  internal           = var.lb_internal
+  load_balancer_type = var.lb_type
   subnets            = data.aws_subnet_ids.default.ids
 
 }
