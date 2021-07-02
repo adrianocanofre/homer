@@ -27,3 +27,15 @@ variable "lb_name" {
   type        = string
   default     = "teste-lb"
 }
+
+variable "lb_port" {
+  description = "Porta em qual o LB vai 'escutar'."
+  type        = number
+  default     = 80
+}
+
+variable "lb_protocol" {
+  description = "Protocolo usado para se conectar no LB."
+  type        = string
+  default     = "HTTP"
+}
