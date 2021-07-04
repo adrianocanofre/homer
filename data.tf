@@ -16,8 +16,8 @@ data "aws_ami" "ubuntu" {
 
 data "aws_vpc" "selected" {
   tags = {
-    Name        = "homer-dev"
-    environment = "dev"
+    Name        = var.vpc_name
+    environment = var.environment
   }
 }
 
@@ -26,8 +26,8 @@ data "aws_subnet_ids" "public" {
   vpc_id = data.aws_vpc.selected.id
 
   tags = {
-    Name        = "homer-public-dev"
-    environment = "dev"
+    Name        = var.subnet_public_name
+    environment = var.environment
   }
 }
 
@@ -36,7 +36,7 @@ data "aws_subnet_ids" "private" {
   vpc_id = data.aws_vpc.selected.id
 
   tags = {
-    Name        = "homer-private-dev"
-    environment = "dev"
+    Name        = var.subnet_private_name
+    environment = var.environment
   }
 }
