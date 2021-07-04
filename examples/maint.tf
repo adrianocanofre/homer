@@ -6,7 +6,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "homer-s3-state"
+    bucket = "you-bucket"
     key    = "homer/terraform.tfstate"
     region = "us-east-1"
   }
