@@ -6,16 +6,15 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "my_bucket"
+    bucket = "homer-s3-state"
     key    = "homer/terraform.tfstate"
     region = "us-east-1"
   }
 }
 
 
-module "teste-homer" {
-  source  = "git@github.com:adrianocanofre/homer.git"
-  version = "v0.0.1"
+module "teste_homer" {
+  source = "git::https://github.com/adrianocanofre/homer.git?ref=v0.0.1"
 
   app_name  = "teste-homer"
   user_data = file("scripts/userdata.sh")
