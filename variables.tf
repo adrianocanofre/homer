@@ -25,7 +25,7 @@ variable "key_name" {
 variable "user_data" {
   description = "The user data to provide when launching the instance."
   type        = string
-  default     = "scripts/userdata.sh"
+  default     = null
 }
 
 variable "lb_type" {
