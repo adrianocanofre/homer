@@ -14,11 +14,29 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-data "aws_vpc" "default" {
-  default = true
+data "aws_vpc" "selected" {
+  tags = {
+    Name        = "homer-dev"
+    environment = "dev"
+  }
 }
 
 
-data "aws_subnet_ids" "default" {
-  vpc_id = data.aws_vpc.default.id
+data "aws_subnet_ids" "public" {
+  vpc_id = data.aws_vpc.selected.id
+
+  tags = {
+    Name        = "homer-public-dev"
+    environment = "dev"
+  }
+}
+
+
+data "aws_subnet_ids" "private" {
+  vpc_id = data.aws_vpc.selected.id
+
+  tags = {
+    Name        = "homer-private-dev"
+    environment = "dev"
+  }
 }

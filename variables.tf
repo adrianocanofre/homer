@@ -13,7 +13,7 @@ variable "lb_type" {
 variable "lb_internal" {
   description = "True  ou false"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "key_name" {
@@ -28,14 +28,20 @@ variable "lb_name" {
   default     = "teste-lb"
 }
 
-variable "lb_port" {
+variable "http_port" {
   description = "Porta em qual o LB vai 'escutar'."
   type        = number
   default     = 80
 }
 
-variable "lb_protocol" {
+variable "http_protocol" {
   description = "Protocolo usado para se conectar no LB."
   type        = string
   default     = "HTTP"
+}
+
+variable "app_name" {
+  description = "Nome do projeto"
+  type        = string
+  default     = "homer"
 }
