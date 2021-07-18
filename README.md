@@ -36,7 +36,7 @@ This project create a simple infrastructure in AWS.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| app\_name | Nome do projeto | `string` | `"homer"` | no |
+| app\_name | Project name. | `string` | `"homer"` | no |
 | ec2\_type | Instance type(t3.medium, t3.xlarge, etc) | `string` | `"t3.micro"` | no |
 | environment | Environment name. | `string` | `"dev"` | no |
 | health\_check | A list of maps containing key/value pair. | `any` | <pre>{<br>  "healthy_threshold": 3,<br>  "interval": 30,<br>  "path": "/",<br>  "port": 80,<br>  "protocol": "HTTP",<br>  "timeout": 2,<br>  "unhealthy_threshold": 5<br>}</pre> | no |
@@ -53,4 +53,4 @@ This project create a simple infrastructure in AWS.
 
 ## Outputs
 
-No output.
+| lb\_dns\_name | DNS |
