@@ -1,5 +1,5 @@
 variable "app_name" {
-  description = "Nome do projeto"
+  description = "Project name."
   type        = string
   default     = "homer"
 }
@@ -17,7 +17,7 @@ variable "ec2_type" {
 }
 
 variable "key_name" {
-  description = "Nome da pem que sera usado para conectar na ec2."
+  description = "The key name that should be used for the instance."
   type        = string
   default     = "homer"
 }
@@ -35,7 +35,7 @@ variable "lb_type" {
 }
 
 variable "lb_internal" {
-  description = "True  ou false"
+  description = "True or false"
   type        = bool
   default     = false
 }
@@ -93,4 +93,22 @@ variable "subnet_private_name" {
   description = "Subnet private name."
   type        = string
   default     = "homer-private-dev"
+}
+
+variable "asg_min_size" {
+  description = "The minimum size of the Auto Scaling Group."
+  type        = number
+  default     = 1
+}
+
+variable "asg_max_size" {
+  description = "The maximum size of the Auto Scaling Group."
+  type        = number
+  default     = 1
+}
+
+variable "asg_desired_capacity" {
+  description = " The number of Amazon EC2 instances that should be running in the group."
+  type        = number
+  default     = 1
 }
